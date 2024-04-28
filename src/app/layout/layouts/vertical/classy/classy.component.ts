@@ -11,6 +11,7 @@ import {
 } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { InitialData } from 'app/app.types';
+import { AuthService } from 'app/core/auth/auth.service';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { UserService } from 'app/core/user/user.service';
@@ -62,7 +63,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService,
-        private _userAuthService: UserAuthService
+        private _authService: AuthService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -148,5 +149,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             // Toggle the opened status
             navigation.toggle();
         }
+    }
+
+    logout(): void {
+        this._authService.signOut();
+        this._router.navigate(['sign-out']);
     }
 }

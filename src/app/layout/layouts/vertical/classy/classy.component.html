@@ -49,14 +49,25 @@
     </ng-container>
     <!-- Navigation footer hook -->
     <ng-container fuseVerticalNavigationContentFooter>
-        <div
+        <!-- <div
             class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4 opacity-12"
         >
             <img
                 class="max-w-36"
                 src="assets/images/logo/logo-text-on-dark.svg"
             />
-        </div>
+        </div> -->
+        <button mat-button (click)="logout()">
+            <mat-icon
+                style="
+                    margin-left: 6px !important;
+                    margin-right: 16px !important;
+                "
+                svgIcon="feather:arrow-left-circle"
+                class="custom-icon-color"
+            ></mat-icon>
+            Logout
+        </button>
     </ng-container>
 </fuse-vertical-navigation>
 
