@@ -6,7 +6,7 @@
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
-    [navigation]="navigation.default"
+    [navigation]="data.navigation.default"
     [opened]="!isScreenSmall"
 >
     <!-- Navigation header hook -->
@@ -37,12 +37,12 @@
                 <div
                     class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium"
                 >
-                    {{ user.displayName }}
+                    {{ data.user.displayName }}
                 </div>
                 <div
                     class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary"
                 >
-                    {{ user.userEmail }}
+                    {{ data.user.userEmail }}
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Data, Router, RouterOutlet } from '@angular/router';
 import { FuseFullscreenComponent } from '@fuse/components/fullscreen';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
 import {
@@ -10,6 +10,7 @@ import {
     FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { InitialData } from 'app/app.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { UserService } from 'app/core/user/user.service';
@@ -20,6 +21,7 @@ import { NotificationsComponent } from 'app/layout/common/notifications/notifica
 import { QuickChatComponent } from 'app/layout/common/quick-chat/quick-chat.component';
 import { SearchComponent } from 'app/layout/common/search/search.component';
 import { ShortcutsComponent } from 'app/layout/common/shortcuts/shortcuts.component';
+import { UserAuthService } from 'app/services/user.auth.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -48,6 +50,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     navigation: Navigation;
     user: User;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    data: InitialData;
 
     /**
      * Constructor
@@ -58,7 +61,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _navigationService: NavigationService,
         private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseNavigationService: FuseNavigationService
+        private _fuseNavigationService: FuseNavigationService,
+        private _userAuthService: UserAuthService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -101,6 +105,18 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 // Check if the screen is small
                 this.isScreenSmall = !matchingAliases.includes('md');
             });
+
+        // Subscribe to the resolved route data
+        this._activatedRoute.data.subscribe((data: Data) => {
+            this.data = data.initialData;
+            if (this._router.url === '/auth-redirect') {
+                this._router.navigateByUrl(
+                    data?.initialData?.navigation?.default?.length > 0
+                        ? data?.initialData?.navigation?.default[0]?.link
+                        : 'no-permission'
+                );
+            }
+        });
     }
 
     /**
