@@ -1,0 +1,94 @@
+<h2 mat-dialog-title>Add / Update Admin</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="flex border-b">
+        <form class="flex flex-col w-full" [formGroup]="contactForm">
+            <div class="flex w-full">
+                <div class="flex flex-auto">
+                    <div class="flex flex-col w-full">
+                        <!-- Name -->
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Username</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'username'"
+                                [placeholder]="'State'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Email</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'user_email'"
+                                [placeholder]="'Code'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>First Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'first_name'"
+                                [placeholder]="'City'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Last Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'last_name'"
+                                [placeholder]="'Zipcode'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Phone</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'phone'"
+                                [placeholder]="'Zipcode'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Buildings</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'building'"
+                                [placeholder]="'Zipcode'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Role</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'role'"
+                                [placeholder]="'Zipcode'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        (click)="saveClicked()"
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+    >
+        Save
+    </button>
+</mat-dialog-actions>

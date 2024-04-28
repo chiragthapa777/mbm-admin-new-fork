@@ -129,6 +129,20 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/modules/admin/example/example.routes'),
             },
+            {
+                path: 'admin',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.ADMIN,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import('app/modules/admin/admin/admin.routing'),
+            },
         ],
     },
 ];
