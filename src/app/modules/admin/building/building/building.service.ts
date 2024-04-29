@@ -2,23 +2,29 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
+import { Building, BuildingPagination } from './building.types';
+import { UserAuthService } from 'app/services/user.auth.service';
 import { environment } from '../../../../../../environments/environment';
-import { Admin, AdminPagination } from './admin.types';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AdminService {
+export class BuildingService {
     // Private
-    private _pagination: BehaviorSubject<AdminPagination | null> =
+    private _pagination: BehaviorSubject<BuildingPagination | null> =
         new BehaviorSubject(null);
-    private _item: BehaviorSubject<Admin | null> = new BehaviorSubject(null);
-    private _items: BehaviorSubject<Admin[] | null> = new BehaviorSubject(null);
+    private _item: BehaviorSubject<Building | null> = new BehaviorSubject(null);
+    private _items: BehaviorSubject<Building[] | null> = new BehaviorSubject(
+        null
+    );
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(
+        private _httpClient: HttpClient,
+        private userAuthService: UserAuthService
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -27,21 +33,21 @@ export class AdminService {
     /**
      * Getter for pagination
      */
-    get pagination$(): Observable<AdminPagination> {
+    get pagination$(): Observable<BuildingPagination> {
         return this._pagination.asObservable();
     }
 
     /**
      * Getter for item
      */
-    get item$(): Observable<Admin> {
+    get item$(): Observable<Building> {
         return this._item.asObservable();
     }
 
     /**
      * Getter for items
      */
-    get items$(): Observable<Admin[]> {
+    get items$(): Observable<Building[]> {
         return this._items.asObservable();
     }
 
@@ -65,27 +71,30 @@ export class AdminService {
         sort: string = 'name',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
-    ): Observable<{ pagination: AdminPagination; items: Admin[] }> {
+    ): Observable<{ pagination: BuildingPagination; items: Building[] }> {
+        let url = environment.baseUrl + 'admin/buildings';
+        if (this.userAuthService.isManager()) {
+            url = environment.baseUrl + 'manager/buildings';
+        }
+
+        url +=
+            '?searchBy=address&searchBy=zipcode&searchBy=city&searchBy=statename';
+
         return this._httpClient
-            .get<{ pagination: AdminPagination; items: any }>(
-                environment.baseUrl + 'users',
-                {
-                    params: {
-                        page: '' + page,
-                        limit: '' + size,
-                        sortBy:
-                            sort && order
-                                ? `${sort}:${order?.toUpperCase()}`
-                                : 'id:DESC',
-                        // order,
-                        search: 'Admin',
-                        searchBy: 'role',
-                    },
-                }
-            )
+            .get<{ pagination: BuildingPagination; items: any }>(url, {
+                params: {
+                    page: '' + page,
+                    limit: '' + size,
+                    sortBy:
+                        sort && order
+                            ? `${sort}:${order?.toUpperCase()}`
+                            : 'id:DESC',
+                    search,
+                },
+            })
             .pipe(
                 tap((response) => {
-                    const pagination: AdminPagination = {
+                    const pagination: BuildingPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
                         page: response['meta']['currentPage'],
@@ -93,7 +102,6 @@ export class AdminService {
                         startIndex: 1,
                         endIndex: response['meta']['totalPages'],
                     };
-
                     this._pagination.next(pagination);
                     this._items.next(response['data']);
                 })
@@ -103,12 +111,13 @@ export class AdminService {
     /**
      * Get item by id
      */
-    getProductById(id: string): Observable<Admin> {
+    getProductById(id: string): Observable<Building> {
         return this._items.pipe(
             take(1),
             map((items) => {
                 // Find the item
-                const item = items.find((admin) => admin.id === id) || null;
+                const item =
+                    items.find((building) => building.id === id) || null;
 
                 // Update the item
                 this._item.next(item);
@@ -132,16 +141,20 @@ export class AdminService {
      * Create item
      */
 
-    createProduct(admin) {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    createProduct(building: any) {
+        console.log(environment.baseUrl + 'building', building);
+
         return this._httpClient
-            .post(environment.baseUrl + 'admin', admin)
+            .post(environment.baseUrl + 'admin/building', building)
             .subscribe(
-                (res) => {
-                    return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
+                (res) =>
+                    this.getProducts(1, 10, 'name', 'asc', '').subscribe(
                         (items: any) => {}
-                    );
-                },
-                (err) => {}
+                    ),
+                (err) => {
+                    console.log(err);
+                }
             );
     }
 
@@ -152,24 +165,38 @@ export class AdminService {
      * @param item
      */
 
-    updateProduct(id: string, item: Admin) {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    updateProduct(id: string, item: Building) {
         // console.log(environment.baseUrl + 'item');
 
         const httpOptions = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
             body: item,
         };
 
         return this._httpClient
-            .patch(environment.baseUrl + 'users/' + id, item)
+            .patch(environment.baseUrl + 'admin/building/' + id, item)
             .subscribe(
-                (res) => {
-                    return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
+                (res) =>
+                    this.getProducts(1, 10, 'name', 'asc', '').subscribe(
                         (items: any) => {}
-                    );
-                },
+                    ),
                 (err) => {}
             );
+    }
+
+    getBuildingOptions(): Observable<any> {
+        // console.log(environment.baseUrl + 'item');
+
+        const httpOptions = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+
+        return this._httpClient.get(
+            environment.baseUrl + 'admin/buildings/options'
+        );
     }
 
     /**
@@ -177,20 +204,23 @@ export class AdminService {
      *
      * @param id
      */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     deleteProduct(id: string) {
+        // console.log(environment.baseUrl + 'item');
+
         const httpOptions = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
             body: {},
         };
 
         return this._httpClient
-            .delete(environment.baseUrl + 'users/' + id, httpOptions)
+            .delete(environment.baseUrl + 'admin/building/' + id, httpOptions)
             .subscribe(
-                (res) => {
-                    return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
+                (res) =>
+                    this.getProducts(1, 10, 'name', 'asc', '').subscribe(
                         (items: any) => {}
-                    );
-                },
+                    ),
                 (err) => {}
             );
     }

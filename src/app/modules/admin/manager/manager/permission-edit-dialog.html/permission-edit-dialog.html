@@ -1,0 +1,122 @@
+<h2 mat-dialog-title class="font-bold text-2xl">Permissions</h2>
+<mat-dialog-content class="mat-typography">
+    <form action="" [formGroup]="permissionForm" class="w-full relative">
+        <app-layout-loader
+            *ngIf="saveLoading || permissionsLoading"
+        ></app-layout-loader>
+        <table class="table-auto w-full">
+            <thead class="border">
+                <tr>
+                    <th class="p-2 mx-auto min-w-[150px] text-start">
+                        Modules
+                    </th>
+                    <th class="p-2 mx-auto">All</th>
+                    <th class="p-2 mx-auto">Read</th>
+                    <th class="p-2 mx-auto">Create</th>
+                    <th class="p-2 mx-auto">Update</th>
+                    <th class="p-2 mx-auto">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container formArrayName="permissionsArray">
+                    <tr
+                        *ngFor="let item of items.controls; let i = index"
+                        [formGroupName]="i"
+                    >
+                        <td class="p-2 min-w-[150px] capitalize">
+                            {{ item.value.subject | permissionName }}
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="ALL_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="READ_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="WRITE_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="UPDATE_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="DELETE_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <ng-container *ngIf="permissionSubjects.length>0">
+                    <tr [formGroup]="permissionForm.get('addObject')">
+                        <td class="p-2 min-w-[150px]">
+                            <mat-select
+                                formControlName="subject"
+                                name=""
+                                placeholder="Add permission"
+                            >
+                                <mat-option
+                                    *ngFor="let val of permissionSubjects"
+                                    [value]="val"
+                                    class="capitalize"
+                                    >{{val | permissionName}}</mat-option
+                                >
+                            </mat-select>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="ALL_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="READ_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="WRITE_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="UPDATE_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td>
+                        <td class="p-2 text-center">
+                            <mat-checkbox
+                                formControlName="DELETE_ACTION"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </td></tr
+                ></ng-container>
+            </tbody>
+        </table>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+    <button
+        mat-button
+        (click)="saveChanges()"
+        [disabled]="!permissionForm.dirty || saveLoading"
+    >
+        Save
+    </button>
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

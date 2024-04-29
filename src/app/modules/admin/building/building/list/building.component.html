@@ -10,26 +10,30 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Admins</div>
+        <div class="text-4xl font-extrabold tracking-tight">Buildings</div>
         <!-- Actions -->
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
-            <!-- <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
+            <mat-form-field
+                class="fuse-mat-dense fuse-mat-no-subscript min-w-100 mt-4"
+            >
                 <mat-icon
                     matPrefix
-                    [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                    [svgIcon]="'heroicons_outline:search'"
+                ></mat-icon>
                 <input
                     matInput
                     [formControl]="searchInputControl"
                     [autocomplete]="'off'"
-                    [placeholder]="'Search items'">
-            </mat-form-field> -->
+                    [placeholder]="'Search buildings'"
+                />
+            </mat-form-field>
             <!-- Add product button -->
             <button
+                *ngIf="'BUILDING' | permission : ['WRITE_ACTION']"
                 class="ml-4"
                 mat-flat-button
                 [color]="'primary'"
-                *ngIf="'ADMIN' | permission : ['WRITE_ACTION']"
                 (click)="openDialog()"
             >
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
@@ -42,7 +46,7 @@
     <div class="flex flex-auto overflow-hidden">
         <!-- Products list -->
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
-            <ng-container *ngIf="itemsCount > 0; else noProducts">
+            <ng-container>
                 <!-- Table wrapper -->
                 <div class="overflow-x-auto sm:overflow-y-auto" cdkScrollable>
                     <!-- Table -->
@@ -59,61 +63,79 @@
                         [trackBy]="trackByFn"
                     >
                         <!-- SKU -->
-                        <ng-container matColumnDef="username">
+                        <ng-container matColumnDef="sku">
                             <th
                                 class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
+                                mat-sort-header="statename"
                                 disableClear
-                                mat-sort-header="userLogin"
                             >
-                                username
+                                State Name
                             </th>
                             <td class="px-8" mat-cell *matCellDef="let product">
                                 <div class="flex items-center">
-                                    <span class="truncate">{{
-                                        product.userLogin
-                                    }}</span>
+                                    <span class="truncate"
+                                        >{{ product.statename }} (
+                                        {{ product.statecode }} )</span
+                                    >
                                 </div>
                             </td>
                         </ng-container>
 
                         <!-- Price -->
-                        <ng-container matColumnDef="name">
-                            <th
-                                class="w-30 bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                disableClear
-                                mat-sort-header="userNicename"
-                            >
-                                Name
-                            </th>
-                            <td class="pr-4" mat-cell *matCellDef="let product">
-                                {{ product.userNicename }}
-                            </td>
-                        </ng-container>
 
-                        <ng-container matColumnDef="email">
+                        <ng-container matColumnDef="city">
                             <th
                                 class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
+                                mat-sort-header
                                 disableClear
-                                mat-sort-header="userEmail"
                             >
-                                Email
+                                City
                             </th>
                             <td class="pr-4" mat-cell *matCellDef="let product">
-                                {{ product.userEmail }}
+                                {{ product.city }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="zip">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header="zipcode"
+                                disableClear
+                            >
+                                Zip Code
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.zipcode }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="address">
+                            <th
+                                class="w-30 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear
+                            >
+                                Address
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.address }}
                             </td>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
                             <th
-                                class="w-16 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                class="w-24 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
+                                mat-sort-header
                                 disableClear
                             >
                                 Action
@@ -165,13 +187,13 @@
                 ></mat-paginator>
             </ng-container>
 
-            <ng-template #noProducts>
+            <ng-container *ngIf="itemsCount === 0">
                 <div
                     class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
                 >
                     There are no items!
                 </div>
-            </ng-template>
+            </ng-container>
         </div>
     </div>
 </div>

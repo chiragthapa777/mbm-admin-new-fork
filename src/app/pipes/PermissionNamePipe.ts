@@ -8,6 +8,7 @@ import {
 
 @Pipe({
     name: 'permissionName',
+    standalone: true,
 })
 export class PermissionNamePipe implements PipeTransform {
     transform(subjectName: PERMISSION_SUBJECT | string): string {

@@ -10,7 +10,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Admins</div>
+        <div class="text-4xl font-extrabold tracking-tight">Managers</div>
         <!-- Actions -->
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -26,10 +26,10 @@
             </mat-form-field> -->
             <!-- Add product button -->
             <button
+                *ngIf="'MANAGER' | permission : ['WRITE_ACTION']"
                 class="ml-4"
                 mat-flat-button
                 [color]="'primary'"
-                *ngIf="'ADMIN' | permission : ['WRITE_ACTION']"
                 (click)="openDialog()"
             >
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
@@ -64,8 +64,8 @@
                                 class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
-                                disableClear
                                 mat-sort-header="userLogin"
+                                disableClear
                             >
                                 username
                             </th>
@@ -84,8 +84,8 @@
                                 class="w-30 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
-                                disableClear
                                 mat-sort-header="userNicename"
+                                disableClear
                             >
                                 Name
                             </th>
@@ -99,8 +99,8 @@
                                 class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
-                                disableClear
                                 mat-sort-header="userEmail"
+                                disableClear
                             >
                                 Email
                             </th>
@@ -111,7 +111,7 @@
 
                         <ng-container matColumnDef="action">
                             <th
-                                class="w-16 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                class="w-24 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
                                 disableClear
@@ -136,6 +136,14 @@
                                 <a (click)="view('Delete', element)">
                                     <mat-icon
                                         svgIcon="heroicons_outline:eye"
+                                    ></mat-icon>
+                                </a>
+                                <a
+                                    (click)="openPermissionEditDialog(element)"
+                                    *ngIf="isAdmin"
+                                >
+                                    <mat-icon
+                                        svgIcon="heroicons_outline:adjustments"
                                     ></mat-icon>
                                 </a>
                             </td>

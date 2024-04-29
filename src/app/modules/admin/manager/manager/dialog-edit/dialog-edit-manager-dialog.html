@@ -1,0 +1,145 @@
+<h2 mat-dialog-title>Add / Update Admin</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="flex border-b">
+        <form class="flex flex-col w-full" [formGroup]="contactForm">
+            <div class="flex w-full">
+                <div class="flex flex-auto">
+                    <div class="flex flex-col w-full">
+                        <!-- Name -->
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Username</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'username'"
+                                [placeholder]="'State'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Email</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'user_email'"
+                                [placeholder]="'Code'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>First Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'first_name'"
+                                [placeholder]="'City'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Last Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'last_name'"
+                                [placeholder]="'Zipcode'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+
+                        <!-- <mat-form-field class="flex flex-col w-full ">
+                            <mat-label>Buildings</mat-label>
+                            <input matInput [formControlName]="'building'" [placeholder]="'Zipcode'"
+                                [spellcheck]="false" />
+                        </mat-form-field> -->
+
+                        <!-- <p>
+                            <mat-form-field class="flex flex-col w-full ">
+                                <mat-select (selectionChange)="someMethod($event.value)"
+                                    [formControl]="bankServerSideCtrl" placeholder="Building">
+                                    <mat-option>
+                                        <ngx-mat-select-search [formControl]="bankServerSideFilteringCtrl"
+                                            [searching]="searching"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let bank of filteredServerSideBuildings | async" [value]="bank">
+                                        {{bank.address}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+
+                        </p> -->
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>State</mat-label>
+                            <mat-select formControlName="state">
+                                <mat-option
+                                    *ngFor="let state of stateOptions"
+                                    [value]="state"
+                                >
+                                    {{ state }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>City</mat-label>
+                            <mat-select formControlName="city">
+                                <mat-option
+                                    *ngFor="let city of cityOptions"
+                                    [value]="city"
+                                >
+                                    {{ city }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Zip</mat-label>
+                            <mat-select formControlName="zipcode">
+                                <mat-option
+                                    *ngFor="let zip of zipOptions"
+                                    [value]="zip"
+                                >
+                                    {{ zip }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Building</mat-label>
+                            <mat-select formControlName="building">
+                                <mat-option
+                                    *ngFor="let building of buildingOptions"
+                                    [value]="building"
+                                >
+                                    {{ building }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Apartment</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'apartment'"
+                                [placeholder]="'apartment'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        (click)="saveClicked()"
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+    >
+        Save
+    </button>
+</mat-dialog-actions>

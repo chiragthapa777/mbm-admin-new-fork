@@ -2,18 +2,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
+import { Manager, ManagerPagination } from './manager.types';
 import { environment } from '../../../../../../environments/environment';
-import { Admin, AdminPagination } from './admin.types';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AdminService {
+export class ManagerService {
     // Private
-    private _pagination: BehaviorSubject<AdminPagination | null> =
+    private _pagination: BehaviorSubject<ManagerPagination | null> =
         new BehaviorSubject(null);
-    private _item: BehaviorSubject<Admin | null> = new BehaviorSubject(null);
-    private _items: BehaviorSubject<Admin[] | null> = new BehaviorSubject(null);
+    private _item: BehaviorSubject<Manager | null> = new BehaviorSubject(null);
+    private _items: BehaviorSubject<Manager[] | null> = new BehaviorSubject(
+        null
+    );
 
     /**
      * Constructor
@@ -27,21 +29,21 @@ export class AdminService {
     /**
      * Getter for pagination
      */
-    get pagination$(): Observable<AdminPagination> {
+    get pagination$(): Observable<ManagerPagination> {
         return this._pagination.asObservable();
     }
 
     /**
      * Getter for item
      */
-    get item$(): Observable<Admin> {
+    get item$(): Observable<Manager> {
         return this._item.asObservable();
     }
 
     /**
      * Getter for items
      */
-    get items$(): Observable<Admin[]> {
+    get items$(): Observable<Manager[]> {
         return this._items.asObservable();
     }
 
@@ -65,9 +67,9 @@ export class AdminService {
         sort: string = 'name',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
-    ): Observable<{ pagination: AdminPagination; items: Admin[] }> {
+    ): Observable<{ pagination: ManagerPagination; items: Manager[] }> {
         return this._httpClient
-            .get<{ pagination: AdminPagination; items: any }>(
+            .get<{ pagination: ManagerPagination; items: any }>(
                 environment.baseUrl + 'users',
                 {
                     params: {
@@ -78,14 +80,14 @@ export class AdminService {
                                 ? `${sort}:${order?.toUpperCase()}`
                                 : 'id:DESC',
                         // order,
-                        search: 'Admin',
-                        searchBy: 'role',
+                        search: 'Manager',
                     },
                 }
             )
             .pipe(
                 tap((response) => {
-                    const pagination: AdminPagination = {
+                    console.log(response);
+                    let paginatio: ManagerPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
                         page: response['meta']['currentPage'],
@@ -94,7 +96,7 @@ export class AdminService {
                         endIndex: response['meta']['totalPages'],
                     };
 
-                    this._pagination.next(pagination);
+                    this._pagination.next(paginatio);
                     this._items.next(response['data']);
                 })
             );
@@ -103,7 +105,7 @@ export class AdminService {
     /**
      * Get item by id
      */
-    getProductById(id: string): Observable<Admin> {
+    getProductById(id: string): Observable<Manager> {
         return this._items.pipe(
             take(1),
             map((items) => {
@@ -133,15 +135,23 @@ export class AdminService {
      */
 
     createProduct(admin) {
+        console.log(environment.baseUrl + 'users', admin);
+
         return this._httpClient
-            .post(environment.baseUrl + 'admin', admin)
+            .post(environment.baseUrl + 'users', admin)
             .subscribe(
                 (res) => {
+                    console.log(
+                        '🚀 ~ ManagerService ~ createProduct ~ res:',
+                        res
+                    );
                     return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
                         (items: any) => {}
                     );
                 },
-                (err) => {}
+                (err) => {
+                    console.log(err);
+                }
             );
     }
 
@@ -152,7 +162,7 @@ export class AdminService {
      * @param item
      */
 
-    updateProduct(id: string, item: Admin) {
+    updateProduct(id: string, item: Manager) {
         // console.log(environment.baseUrl + 'item');
 
         const httpOptions = {
@@ -178,6 +188,8 @@ export class AdminService {
      * @param id
      */
     deleteProduct(id: string) {
+        console.log(environment.baseUrl + id);
+
         const httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
             body: {},
