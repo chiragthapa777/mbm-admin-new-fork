@@ -1,0 +1,123 @@
+<button
+    mat-mini-fab
+    color="warn"
+    mat-dialog-close
+    class="text-2xl text-red-500 absolute right-2 top-2 z-10 shadow-none bg-white rounded-full"
+>
+    <mat-icon>close</mat-icon>
+</button>
+<!-- this is just test change -->
+<mat-dialog-content class="relative min-w-40">
+    <div class="flex-auto">
+        <div class="prose prose-sm max-w-5xl">
+            <ng-container>
+                <div>
+                    <h2 class="my-0">Ticket ID : {{ticket.id}}</h2>
+                    <div class="font-semibold text-md text-secondary">
+                        {{ticket.stamp}}
+                    </div>
+                </div>
+                <hr class="mt-6" />
+
+                <ng-container>
+                    <div class="mt-4">
+                        <span
+                            class="inline-flex bg-default rounded px-3 py-1 text-secondary font-bold"
+                            >Phone :
+                        </span>
+                        <ng-container> {{ ticket.user.phone}} </ng-container>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="mt-4">
+                        <span
+                            class="inline-flex bg-default rounded px-3 py-1 text-secondary font-bold"
+                            >Email :
+                        </span>
+                        <ng-container>
+                            {{ ticket.user.userEmail}}
+                        </ng-container>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="mt-4">
+                        <span
+                            class="inline-flex bg-default rounded px-3 py-1 text-secondary font-bold"
+                            >Message</span
+                        >
+                        <ul>
+                            <p class="whitespace-pre-line">
+                                {{ticket.message}}
+                            </p>
+                        </ul>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <hr class="my-2" />
+    <ng-container *ngIf="'TICKET_COMMENT' | permission: ['WRITE_ACTION']">
+        <h2 class="font-bold text-2xl">Add a comment</h2>
+        <form class="flex flex-col w-full my-2" [formGroup]="commentForm">
+            <div class="flex w-full justify-center items-center">
+                <mat-form-field class="w-full">
+                    <mat-label>Message</mat-label>
+                    <textarea
+                        matInput
+                        formControlName="message"
+                        [placeholder]="'Message'"
+                        [spellcheck]="false"
+                        #messageElem
+                    ></textarea>
+                    <mat-error
+                        *ngIf="commentForm.get('message').invalid &&
+                    commentForm.get('message').touched"
+                        >Message is required</mat-error
+                    >
+                </mat-form-field>
+                <button
+                    mat-icon-button
+                    (click)="addComment()"
+                    [disabled]="commentAddLoading"
+                >
+                    <mat-icon>send</mat-icon>
+                </button>
+            </div>
+        </form>
+        <hr class="my-2" />
+    </ng-container>
+
+    <ng-container  *ngIf="'TICKET_COMMENT' | permission: ['READ_ACTION']">
+        <h2 class="font-bold text-2xl">Comments</h2>
+        <div class="flex flex-col w-full relative mt-2">
+            <app-layout-loader *ngIf="commentsLoading"></app-layout-loader>
+            <p *ngIf="comments.length ===0 && !commentsLoading">
+                No comments found
+            </p>
+            <div class="flex flex-col gap-2">
+                <div
+                    *ngFor="let item of comments; let i = index"
+                    class="p-2 w-full rounded-md border"
+                >
+                    <div class="flex justify-between mb-2">
+                        <h3>{{item.manager?.userLogin}}</h3>
+                        <p>{{ item.stamp | date:'yyyy-MM-dd' }}</p>
+                    </div>
+                    <div class="bg-default rounded-md p-2">
+                        <p class="whitespace-pre-line">{{item.message}}</p>
+                    </div>
+                </div>
+            </div>
+            <button
+                mat-stroked-button
+                *ngIf="hasMoreComment"
+                class="mx-auto my-2"
+                (click)="loadMoreComments()"
+            >
+                Load more
+            </button>
+        </div>
+    </ng-container>
+</mat-dialog-content>

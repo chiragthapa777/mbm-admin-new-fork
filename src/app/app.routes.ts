@@ -3,8 +3,8 @@ import { initialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
-import { PERMISSION_ACTION, PERMISSION_SUBJECT } from './enums/permission.enum';
 import { PermissionGuard } from './core/auth/guards/permission.guard';
+import { PERMISSION_ACTION, PERMISSION_SUBJECT } from './enums/permission.enum';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -170,6 +170,82 @@ export const appRoutes: Route[] = [
                 },
                 loadChildren: () =>
                     import('app/modules/admin/building/building.routing'),
+            },
+            {
+                path: 'bdocs',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.BUILDING_DOC,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/building-doc/building-doc.routing'
+                    ),
+            },
+            {
+                path: 'notification',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.NOTIFICATION,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/building-notification/building-notification.routing'
+                    ),
+            },
+            {
+                path: 'payment',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.PAYMENT,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import('app/modules/admin/payment/payment.routing'),
+            },
+            {
+                path: 'ticket0',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.TICKET,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/ticket-pending/ticket-pending.routing'
+                    ),
+            },
+            {
+                path: 'ticket1',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.TICKET,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import('app/modules/admin/ticket-done/ticket-done.routing'),
             },
         ],
     },

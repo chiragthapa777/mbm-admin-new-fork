@@ -1,0 +1,56 @@
+<mat-dialog-content class="mat-typography">
+    <div class="flex border-b">
+        <form class="flex flex-col w-full" [formGroup]="contactForm">
+            <div class="flex w-full">
+                <div class="flex flex-auto">
+                    <div class="flex flex-col w-full pl-8">
+                        <div>
+                            <input
+                                type="file"
+                                class="file-input"
+                                (change)="onFileSelected($event)"
+                                #fileUpload
+                            />
+
+                            <div class="file-upload">
+                                {{fileName || "No file selected yet."}}
+
+                                <button
+                                    mat-mini-fab
+                                    color="primary"
+                                    class="upload-btn"
+                                    (click)="fileUpload.click()"
+                                >
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Name -->
+                        <mat-form-field class="w-full">
+                            <mat-label>Description</mat-label>
+                            <textarea
+                                matInput
+                                rows="5"
+                                [formControlName]="'description'"
+                                [placeholder]="'description'"
+                                [spellcheck]="false"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        (click)="saveClicked()"
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+    >
+        Save
+    </button>
+</mat-dialog-actions>

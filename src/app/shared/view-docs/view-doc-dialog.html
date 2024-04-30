@@ -1,0 +1,77 @@
+<mat-dialog-content class="mat-typography">
+    <ng-container *ngIf="files && (files.length > 0 || files.length > 0); else noItems">
+        <div class="p-6 md:p-8 space-y-8">
+
+            <!-- Files -->
+            <ng-container *ngIf="files.length > 0">
+                <div>
+                    <div class="font-medium">Files</div>
+                    <div
+                        class="flex flex-wrap -m-2 mt-2">
+                        <ng-container *ngFor="let file of files; trackBy:trackByFn">
+                            <div class="relative w-40 h-40 m-2 p-4 shadow rounded-2xl bg-card">
+
+                            <a
+                            *ngIf="'BUILDING_DOC' | permission : ['DELETE_ACTION']"
+                            class="absolute z-20 top-1.5 right-1.5 w-8 h-8 min-h-8"
+                            (click)="deleteFile(file)"
+                            mat-icon-button>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:minus-circle'"></mat-icon>
+                        </a>
+                            <a
+                                [routerLink]="['./details/', file.id]">
+                                <div class="aspect-w-9 aspect-h-6">
+                                    <div class="flex items-center justify-center">
+                                        <!-- Icons -->
+                                        <div class="relative">
+                                            <mat-icon
+                                                class="icon-size-14 text-hint"
+                                                [svgIcon]="'iconsmind:file'"></mat-icon>
+                                            <div
+                                                class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
+                                                [class.bg-red-600]="file.extension === 'pdf'"
+                                                [class.bg-blue-600]="file.extension === 'doc'"
+                                                [class.bg-blue-600]="file.extension === 'docx'"
+                                                [class.bg-green-600]="file.extension === 'xlsx'"
+                                                [class.bg-green-600]="file.extension === 'xls'"
+                                                [class.bg-gray-600]="file.extension === 'txt'"
+                                                [class.bg-amber-600]="file.extension === 'jpg'"
+                                                [class.bg-amber-600]="file.extension === 'jepg'"
+                                                [class.bg-amber-600]="file.extension === 'png'">
+                                                {{file.extension.toUpperCase()}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-auto justify-center text-center text-sm font-medium">
+                                    <span>
+                                       {{file.description}}</span>
+                                    <ng-container *ngIf="file.contents">
+                                        <div class="text-secondary truncate">{{file.contents}}</div>
+                                    </ng-container>
+                                </div>
+                            </a>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+
+</mat-dialog-actions>
+
+
+<ng-template #noItems>
+    <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+        <mat-icon
+            class="icon-size-24"
+            [svgIcon]="'iconsmind:file_hide'"></mat-icon>
+        <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">There are no items!</div>
+    </div>
+</ng-template>

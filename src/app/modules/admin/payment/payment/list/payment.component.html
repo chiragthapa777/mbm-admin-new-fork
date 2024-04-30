@@ -1,0 +1,231 @@
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent"
+>
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b"
+    >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">Payments</div>
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <!-- <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
+                <mat-icon
+                    matPrefix
+                    [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Search items'">
+            </mat-form-field> -->
+            <!-- Add product button -->
+            <!-- <button
+                *ngIf="'PAYMENT' | permission : ['WRITE_ACTION']"
+                class="ml-4"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="openDialog()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button> -->
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Products list -->
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+            <ng-container *ngIf="itemsCount > 0; else noProducts">
+                <!-- Table wrapper -->
+                <div class="overflow-x-auto sm:overflow-y-auto" cdkScrollable>
+                    <!-- Table -->
+                    <table
+                        class="w-full min-w-320 table-fixed bg-transparent"
+                        [ngClass]="{ 'pointer-events-none': isLoading }"
+                        mat-table
+                        matSort
+                        [matSortActive]="'name'"
+                        [matSortDisableClear]="true"
+                        [matSortDirection]="'asc'"
+                        [multiTemplateDataRows]="true"
+                        [dataSource]="items$"
+                        [trackBy]="trackByFn"
+                    >
+                        <!-- SKU -->
+                        <ng-container matColumnDef="transactionid">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header="transactionId"
+                                disableClear
+                            >
+                                Transaction ID
+                            </th>
+                            <td class="px-8" mat-cell *matCellDef="let product">
+                                <div class="flex items-center">
+                                    <span class="truncate">{{
+                                        product.transactionId
+                                    }}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Price -->
+                        <ng-container matColumnDef="transactiondate">
+                            <th
+                                class="w-30 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header="transactionDate"
+                                disableClear
+                            >
+                                Transaction date
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.transactionDate | date : "short" }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="amount">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header="amount"
+                                disableClear
+                            >
+                                Amount
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.amount }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="user">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                disableClear
+                            >
+                                User
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.user?.displayName }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                disableClear
+                            >
+                                Email
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.user?.userEmail }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mode">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header="echeckAccttype"
+                                disableClear
+                            >
+                                Payment mode
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.echeckAccttype }} /
+                                {{ product.echeckEchecktype }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status">
+                            <th
+                                class="w-20 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                disableClear
+                            >
+                                Status
+                            </th>
+                            <td class="pr-4" mat-cell *matCellDef="let product">
+                                {{ product.transactionStatus }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action">
+                            <th
+                                class="w-24 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                disableClear
+                            >
+                                Action
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                                class="action-link"
+                            >
+                                <a
+                                    *ngIf="
+                                        'PAYMENT'
+                                            | permission : ['DELETE_ACTION']
+                                    "
+                                    (click)="delete('Delete', element)"
+                                >
+                                    <mat-icon
+                                        svgIcon="feather:minus-circle"
+                                    ></mat-icon>
+                                </a>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            class="shadow"
+                            mat-header-row
+                            *matHeaderRowDef="itemsTableColumns; sticky: true"
+                        ></tr>
+                        <tr
+                            class="h-18 hover:bg-hover"
+                            mat-row
+                            *matRowDef="let product; columns: itemsTableColumns"
+                        ></tr>
+                    </table>
+                </div>
+
+                <mat-paginator
+                    class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                    [ngClass]="{ 'pointer-events-none': isLoading }"
+                    [length]="pagination.length"
+                    [pageIndex]="pagination.pageIndex - 1"
+                    [pageSize]="pagination.size"
+                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    [showFirstLastButtons]="true"
+                ></mat-paginator>
+            </ng-container>
+
+            <ng-template #noProducts>
+                <div
+                    class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+                >
+                    There are no items!
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

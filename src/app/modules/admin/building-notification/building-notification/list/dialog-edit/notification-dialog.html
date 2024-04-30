@@ -1,0 +1,73 @@
+<h2 mat-dialog-title class="capitalize">{{type}} Notification</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="flex border-b">
+        <form class="flex flex-col w-full" [formGroup]="formGroup">
+            <div class="flex w-full">
+                <div class="flex flex-auto">
+                    <div class="flex flex-col w-full">
+                        <mat-form-field>
+                            <mat-label> Building </mat-label>
+                            <input
+                                formControlName="building"
+                                matInput
+                                type="text"
+                                [matAutocomplete]="auto"
+                            />
+                            <mat-autocomplete
+                                #auto="matAutocomplete"
+                                [displayWith]="displayFn"
+                                (optionsScroll)="onScroll()"
+                            >
+                                <ng-container *ngIf="!loading">
+                                    <mat-option
+                                        *ngFor="let item of building"
+                                        [value]="item"
+                                    >
+                                        <div class="pb-3">
+                                            <p class="font-bold">
+                                                {{item.address}}
+                                            </p>
+                                            <p class="text-sm">
+                                                state : {{item.statename}}
+                                                <br />
+                                                city : {{item.city}} <br />
+                                                zip : {{item.zipcode}}
+                                            </p>
+                                        </div>
+                                    </mat-option>
+                                </ng-container>
+
+                                <mat-option *ngIf="loading" disabled>
+                                    Loading...
+                                    <mat-progress-bar
+                                        mode="query"
+                                    ></mat-progress-bar>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="flex flex-col w-full">
+                            <mat-label>Message</mat-label>
+                            <textarea
+                                matInput
+                                [formControlName]="'message'"
+                                [placeholder]="'State'"
+                                [spellcheck]="false"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        (click)="saveClicked()"
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+    >
+        Save
+    </button>
+</mat-dialog-actions>
