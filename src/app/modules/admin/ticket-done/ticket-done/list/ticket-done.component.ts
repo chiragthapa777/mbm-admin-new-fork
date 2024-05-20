@@ -25,7 +25,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { fuseAnimations } from '@fuse/animations';
-import { ExampleDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { DialogViewTicketDialog } from 'app/shared/dialog-view-ticket-comment/dialog-edit-building-dialog';
 import { SharedModule } from 'app/shared/shared.module';
 import { merge, Observable, Subject } from 'rxjs';
@@ -187,15 +187,13 @@ export class TicketDoneListComponent
     // -----------------------------------------------------------------------------------------------------
 
     delete(Update, element: TicketDone) {
-        console.log(Update, element);
 
-        let dialogRef = this.dialog.open(ExampleDialogComponent, {
+        let dialogRef = this.dialog.open(DeleteDialogComponent, {
             width: '250px',
             data: { animal: '' },
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            console.log('The dialog was closed', result);
             // this.animal = result;
 
             this._paymentService.deleteProduct(element.paymentId);

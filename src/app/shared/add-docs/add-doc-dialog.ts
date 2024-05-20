@@ -54,7 +54,6 @@ export class AddDocDialog {
 
     ngOnInit(): void {
         this.category = this.data['data'] || null;
-        console.log(this.data['addressId']);
 
         this.type = this.data['type'];
         this.contactForm = this._formBuilder.group({

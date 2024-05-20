@@ -118,17 +118,13 @@ export class NotificationFormDialog {
             if (updatedValues) {
                 this.notificationService
                     .updateNotification(this.notification?.id, updatedValues)
-                    .subscribe((res) => {
-                        console.log(res);
-                    });
+                    .subscribe();
             }
         }
         if (this.type === 'add') {
             this.notificationService
                 .addNotification(this.formGroup.value)
-                .subscribe((res) => {
-                    console.log(res);
-                });
+                .subscribe();
         }
         this.dialogRef.close({ name: 'ss' });
     }
@@ -144,7 +140,6 @@ export class NotificationFormDialog {
             (res: any) => {
                 this.building = res?.data;
                 this._changeDetectorRef.markForCheck();
-                console.log(this.building);
             },
             () => {},
             () => {

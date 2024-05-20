@@ -32,12 +32,12 @@ import { MatInputModule } from '@angular/material/input';
         MatInputModule,
     ],
 })
-export class ExampleDialogComponent {
+export class DeleteDialogComponent {
     basicInfoForm: FormGroup;
 
     constructor(
         private _formBuilder: FormBuilder,
-        public dialogRef: MatDialogRef<ExampleDialogComponent>,
+        public dialogRef: MatDialogRef<DeleteDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {}
 

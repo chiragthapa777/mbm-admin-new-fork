@@ -2,29 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { TicketPendingPagination, TicketPending } from './ticket-pending.types';
+import { User, UserPagination } from './user.types';
 import { UserAuthService } from 'app/services/user.auth.service';
 import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TicketPendingService {
+export class UserService {
     // Private
-    private _pagination: BehaviorSubject<TicketPendingPagination | null> =
+    private _pagination: BehaviorSubject<UserPagination | null> =
         new BehaviorSubject(null);
-    private _item: BehaviorSubject<TicketPending | null> = new BehaviorSubject(
-        null
-    );
-    private _items: BehaviorSubject<TicketPending[] | null> =
-        new BehaviorSubject(null);
+    private _item: BehaviorSubject<User | null> = new BehaviorSubject(null);
+    private _items: BehaviorSubject<User[] | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
      */
     constructor(
         private _httpClient: HttpClient,
-        private readonly userAuthService: UserAuthService
+        private userAuthService: UserAuthService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -34,21 +31,21 @@ export class TicketPendingService {
     /**
      * Getter for pagination
      */
-    get pagination$(): Observable<TicketPendingPagination> {
+    get pagination$(): Observable<UserPagination> {
         return this._pagination.asObservable();
     }
 
     /**
      * Getter for item
      */
-    get item$(): Observable<TicketPending> {
+    get item$(): Observable<User> {
         return this._item.asObservable();
     }
 
     /**
      * Getter for items
      */
-    get items$(): Observable<TicketPending[]> {
+    get items$(): Observable<User[]> {
         return this._items.asObservable();
     }
 
@@ -67,21 +64,19 @@ export class TicketPendingService {
      * @param search
      */
     getProducts(
-        page: number = 1,
+        page: number = 0,
         size: number = 10,
         sort: string = 'name',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
-    ): Observable<{
-        pagination: TicketPendingPagination;
-        items: TicketPending[];
-    }> {
-        let url = environment.baseUrl + 'admin/tickets?finished=0';
+    ): Observable<{ pagination: UserPagination; items: User[] }> {
+        let url = environment.baseUrl + 'users';
         if (this.userAuthService.isManager()) {
-            url = environment.baseUrl + 'manager/tickets?finished=0';
+            url = environment.baseUrl + 'manager/users';
         }
+
         return this._httpClient
-            .get<{ pagination: TicketPendingPagination; items: any }>(url, {
+            .get<{ pagination: UserPagination; items: any }>(url, {
                 params: {
                     page: '' + page,
                     limit: '' + size,
@@ -89,17 +84,17 @@ export class TicketPendingService {
                         sort && order
                             ? `${sort}:${order?.toUpperCase()}`
                             : 'id:DESC',
-                    search,
+                    search: 'User',
                 },
             })
             .pipe(
                 tap((response) => {
-                    let paginatio: TicketPendingPagination = {
+                    let paginatio: UserPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
                         page: response['meta']['currentPage'],
                         lastPage: response['meta']['totalPages'],
-                        startIndex: 0,
+                        startIndex: 1,
                         endIndex: response['meta']['totalPages'],
                     };
 
@@ -112,13 +107,12 @@ export class TicketPendingService {
     /**
      * Get item by id
      */
-    getProductById(id: string): Observable<TicketPending> {
+    getProductById(id: string): Observable<User> {
         return this._items.pipe(
             take(1),
             map((items) => {
                 // Find the item
-                const item =
-                    items.find((payment) => payment.id === Number(id)) || null;
+                const item = items.find((user) => user.id === id) || null;
 
                 // Update the item
                 this._item.next(item);
@@ -139,13 +133,33 @@ export class TicketPendingService {
     }
 
     /**
+     * Create item
+     */
+
+    createProduct(user) {
+
+        return this._httpClient
+            .post(environment.baseUrl + 'user', user)
+            .subscribe(
+                (res) => {
+                    return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
+                        (items: any) => {}
+                    );
+                },
+                (err) => {
+                    console.log(err);
+                }
+            );
+    }
+
+    /**
      * Update item
      *
      * @param id
      * @param item
      */
 
-    updateProduct(id: string, item: TicketPending) {
+    updateProduct(id: string, item: User) {
         // console.log(environment.baseUrl + 'item');
 
         const httpOptions = {
@@ -154,7 +168,7 @@ export class TicketPendingService {
         };
 
         return this._httpClient
-            .patch(environment.baseUrl + 'payment/' + id, item)
+            .patch(environment.baseUrl + 'user/' + id, item)
             .subscribe(
                 (res) => {
                     return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
@@ -170,24 +184,23 @@ export class TicketPendingService {
      *
      * @param id
      */
-    deleteById(id: number) {
+    deleteProduct(id: string) {
         // console.log(environment.baseUrl + 'item');
-
-        let url = environment.baseUrl + 'admin/tickets/' + id;
-        if (this.userAuthService.isManager()) {
-            url = environment.baseUrl + 'manager/tickets/' + id;
-        }
 
         const httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
             body: {},
         };
 
-        return this._httpClient.delete(url, httpOptions).subscribe({
-            next: (res) => {
-                return this.getProducts(1, 10, 'name', 'asc', '');
-            },
-            error: (err) => {},
-        });
+        return this._httpClient
+            .delete(environment.baseUrl + 'users/' + id, httpOptions)
+            .subscribe(
+                (res) => {
+                    return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
+                        (items: any) => {}
+                    );
+                },
+                (err) => {}
+            );
     }
 }

@@ -25,7 +25,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { fuseAnimations } from '@fuse/animations';
-import { ExampleDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -202,7 +202,7 @@ export class PaymentListComponent implements OnInit, AfterViewInit, OnDestroy {
     delete(Update, element: Payment) {
         console.log(Update, element);
 
-        let dialogRef = this.dialog.open(ExampleDialogComponent, {
+        let dialogRef = this.dialog.open(DeleteDialogComponent, {
             width: '250px',
             data: { animal: '' },
         });

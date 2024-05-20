@@ -37,7 +37,7 @@ import {
     BuildingNotificationPagination,
 } from '../building-notification.types';
 import { NotificationFormDialog } from './dialog-edit/notification-dialog';
-import { ExampleDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { PermissionPipe } from 'app/pipes/PermissionPipe';
 
 @Component({
@@ -198,7 +198,7 @@ export class BuildingNotificationListComponent
     // -----------------------------------------------------------------------------------------------------
 
     delete(Update, element: BuildingNotification): void {
-        let dialogRef = this.dialog.open(ExampleDialogComponent, {
+        let dialogRef = this.dialog.open(DeleteDialogComponent, {
             width: '250px',
             data: { animal: 'delete' },
         });

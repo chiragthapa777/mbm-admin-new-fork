@@ -91,7 +91,6 @@ export class PaymentService {
             })
             .pipe(
                 tap((response) => {
-                    console.log(response);
                     let paginatio: PaymentPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],

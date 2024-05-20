@@ -5,9 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RenderImagePipe implements PipeTransform {
   transform(imageName: string, type: string): string {
-    console.log(type, 'IMAGE TYPEEEEEE');
-
-    console.log('GOT IMAGE X', imageName);
     let CloudFrontUrl = 'https://d2mo2xp2vmmjdo.cloudfront.net';
     const imageRequest = JSON.stringify({
       bucket: 'mbm-test',
@@ -21,7 +18,7 @@ export class RenderImagePipe implements PipeTransform {
       },
     });
 
- 
+
 
     if (!imageName.startsWith('https'))
       imageName = `${CloudFrontUrl}/${btoa(imageRequest)}`;

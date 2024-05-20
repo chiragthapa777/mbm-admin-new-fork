@@ -31,7 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        
+
     ],
 })
 export class DialogEditBuildingDialog {
@@ -59,8 +59,6 @@ export class DialogEditBuildingDialog {
             role: [''],
             building: ['', [Validators.required]],
         });
-        console.log(this.building, 'BUILDING');
-        console.log(this.type);
         if (this.type === 'edit') {
             console.log(this.building, 'BUILDING');
 
@@ -69,13 +67,11 @@ export class DialogEditBuildingDialog {
     }
 
     onFileUploadIcon(path): void {
-        console.log(path, 'IMAGE RETURNED');
         this.contactForm.get('icon').setValue(path);
         this.contactForm.get('icon').updateValueAndValidity();
         this.building.icon = path;
     }
     onFileUploadCover(path): void {
-        console.log(path, 'IMAGE RETURNED');
         this.contactForm.get('cover').setValue(path);
         this.contactForm.get('cover').updateValueAndValidity();
         this.building.cover = path;

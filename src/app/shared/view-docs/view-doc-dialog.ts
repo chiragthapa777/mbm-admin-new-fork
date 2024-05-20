@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BuildingDocService } from 'app/modules/admin/building-doc/building-doc/building-doc.service';
 import { BuildingDoc } from 'app/modules/admin/building-doc/building-doc/building-doc.types';
 import { SharedModule } from '../shared.module';
+import { PermissionPipe } from 'app/pipes/PermissionPipe';
 
 @Component({
     selector: 'inventory-list',
@@ -33,6 +34,7 @@ import { SharedModule } from '../shared.module';
         MatInputModule,
         MatButtonModule,
         MatIconModule,
+        PermissionPipe,
     ],
 })
 export class ViewDocDialog {
@@ -54,8 +56,6 @@ export class ViewDocDialog {
     }
 
     deleteFile(file) {
-        console.log(file);
-
         this._categoryService.deleteProduct(file['id'], this.type);
         this.dialogRef.close({ name: 'ss' });
     }

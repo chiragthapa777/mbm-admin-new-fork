@@ -144,10 +144,6 @@ export class ManagerListComponent implements OnInit, AfterViewInit, OnDestroy {
             this._sort.sortChange
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((sort: Sort) => {
-                    console.log(
-                        '🚀 ~ AdminListComponent ~ .subscribe ~ sort:',
-                        sort
-                    );
                     // Reset back to the first page
                     this._paginator.pageIndex = 0;
                     this._sort.active = sort.active;

@@ -8,7 +8,7 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
@@ -25,18 +25,19 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { fuseAnimations } from '@fuse/animations';
+import { BuildingDoc } from 'app/modules/admin/building-doc/building-doc/building-doc.types';
+import { PermissionPipe } from 'app/pipes/PermissionPipe';
 import { AddDocDialog } from 'app/shared/add-docs/add-doc-dialog';
 import { SharedModule } from 'app/shared/shared.module';
+import { ViewDocDialog } from 'app/shared/view-docs/view-doc-dialog';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { BuildingDocService } from '../building-doc.service';
-import { BuildingDoc, BuildingDocPagination } from '../building-doc.types';
-import { ViewDocDialog } from 'app/shared/view-docs/view-doc-dialog';
-import { PermissionPipe } from 'app/pipes/PermissionPipe';
+import { UserDocService } from '../user-doc.service';
+import { UserDoc, UserDocPagination } from '../user-doc.types';
 
 @Component({
-    selector: 'building-doc-list',
-    templateUrl: './building-doc.component.html',
+    selector: 'user-doc-list',
+    templateUrl: './user-doc.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations,
@@ -61,30 +62,26 @@ import { PermissionPipe } from 'app/pipes/PermissionPipe';
         PermissionPipe,
     ],
 })
-export class BuildingDocListComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+export class UserDocListComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
-    items$: Observable<BuildingDoc[]>;
+    items$: Observable<UserDoc[]>;
 
-    categories: BuildingDoc[];
+    categories: UserDoc[];
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
-    pagination: BuildingDocPagination;
+    pagination: UserDocPagination;
     itemsCount: number = 0;
     itemsTableColumns: string[] = [
-        'state',
-        'code',
-        'city',
-        'zip',
         'address',
+        'date',
+        'message',
         'documents',
         'action',
     ];
     searchInputControl: FormControl = new FormControl();
-    selectedProduct: BuildingDoc | null = null;
+    selectedProduct: UserDoc | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -92,7 +89,8 @@ export class BuildingDocListComponent
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _paymentService: BuildingDocService,
+        private _formBuilder: FormBuilder,
+        private _paymentService: UserDocService,
         public dialog: MatDialog
     ) {}
 
@@ -104,12 +102,10 @@ export class BuildingDocListComponent
      * On init
      */
     ngOnInit(): void {
-        this.isLoading = true;
-
         // Get the pagination
         this._paymentService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((pagination: BuildingDocPagination) => {
+            .subscribe((pagination: UserDocPagination) => {
                 // Update the pagination
                 this.pagination = pagination;
 
@@ -121,9 +117,7 @@ export class BuildingDocListComponent
         this.items$ = this._paymentService.items$;
         this._paymentService.items$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((items: BuildingDoc[]) => {
-                this.isLoading = false;
-
+            .subscribe((items: UserDoc[]) => {
                 // Update the counts
                 this.itemsCount = items.length;
 
@@ -140,10 +134,10 @@ export class BuildingDocListComponent
         this._sort.sortChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((sort) => {
-                this._sort.active = sort.active;
-                this._sort.direction = sort.direction;
                 // Reset back to the first page
                 this._paginator.pageIndex = 0;
+                this._sort.active = sort.active;
+                this._sort.direction = sort.direction;
 
                 // Close the details
             });
@@ -183,24 +177,32 @@ export class BuildingDocListComponent
     view(Update, element: BuildingDoc) {
         const dialogRef = this.dialog.open(ViewDocDialog, {
             width: '630px',
-            data: { data: element['documents'], type: 'building' },
+            data: { data: element['documents'], type: 'user' },
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-            //   return this._paymentService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+            return this._paymentService.getProducts(
+                this._paginator.pageIndex,
+                this._paginator.pageSize,
+                this._sort.active,
+                this._sort.direction
+            );
         });
     }
 
     openEditDialog(element) {
         const dialogRef = this.dialog.open(AddDocDialog, {
             width: '40%',
-            data: { data: element['addressId'], type: 'building' },
+            data: { data: element['id'], type: 'user' },
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-            //   return this._paymentService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+            return this._paymentService.getProducts(
+                this._paginator.pageIndex,
+                this._paginator.pageSize,
+                this._sort.active,
+                this._sort.direction
+            );
         });
     }
 

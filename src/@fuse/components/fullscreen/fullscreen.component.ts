@@ -34,7 +34,6 @@ export class FuseFullscreenComponent
     {
         if (!this._document.fullscreenEnabled)
         {
-            console.log('Fullscreen is not available in this browser.');
             return;
         }
 

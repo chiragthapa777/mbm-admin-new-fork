@@ -5,20 +5,26 @@ import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { PermissionGuard } from './core/auth/guards/permission.guard';
 import { PERMISSION_ACTION, PERMISSION_SUBJECT } from './enums/permission.enum';
+import { NoPermissionComponent } from './components/no-permission/no-permission.component';
+import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.component';
 
 // @formatter:off
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
-    { path: '', pathMatch: 'full', redirectTo: 'example' },
+    { path: '', pathMatch: 'full', redirectTo: 'auth-redirect' },
 
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'example' },
+    {
+        path: 'signed-in-redirect',
+        pathMatch: 'full',
+        redirectTo: 'auth-redirect',
+    },
 
     // Auth routes for guests
     {
@@ -116,18 +122,8 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'example',
-                canActivate: [PermissionGuard],
-                data: {
-                    permission: [
-                        {
-                            subject: PERMISSION_SUBJECT.TICKET,
-                            actions: [PERMISSION_ACTION.READ],
-                        },
-                    ],
-                },
-                loadChildren: () =>
-                    import('app/modules/admin/example/example.routes'),
+                path: 'auth-redirect',
+                component: AuthRedirectComponent,
             },
             {
                 path: 'admin',
@@ -247,6 +243,38 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/modules/admin/ticket-done/ticket-done.routing'),
             },
+            {
+                path: 'user',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.USER,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import('app/modules/admin/user/user.routing'),
+            },
+            {
+                path: 'udocs',
+                canActivate: [PermissionGuard],
+                data: {
+                    permission: [
+                        {
+                            subject: PERMISSION_SUBJECT.USER_DOC,
+                            actions: [PERMISSION_ACTION.READ],
+                        },
+                    ],
+                },
+                loadChildren: () =>
+                    import('app/modules/admin/user-doc/user-doc.routing'),
+            },
         ],
+    },
+    {
+        path: 'no-permission',
+        component: NoPermissionComponent,
     },
 ];

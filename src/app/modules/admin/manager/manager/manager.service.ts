@@ -86,7 +86,6 @@ export class ManagerService {
             )
             .pipe(
                 tap((response) => {
-                    console.log(response);
                     let paginatio: ManagerPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
@@ -135,16 +134,11 @@ export class ManagerService {
      */
 
     createProduct(admin) {
-        console.log(environment.baseUrl + 'users', admin);
 
         return this._httpClient
             .post(environment.baseUrl + 'users', admin)
             .subscribe(
                 (res) => {
-                    console.log(
-                        '🚀 ~ ManagerService ~ createProduct ~ res:',
-                        res
-                    );
                     return this.getProducts(1, 10, 'name', 'asc', '').subscribe(
                         (items: any) => {}
                     );

@@ -101,7 +101,6 @@ export class BuildingNotificationService {
             )
             .pipe(
                 tap((response) => {
-                    console.log(response);
                     let paginatio: BuildingNotificationPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],

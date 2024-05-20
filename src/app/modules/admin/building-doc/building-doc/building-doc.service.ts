@@ -98,7 +98,6 @@ export class BuildingDocService {
             })
             .pipe(
                 tap((response) => {
-                    console.log(response);
                     const pagination: BuildingDocPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
