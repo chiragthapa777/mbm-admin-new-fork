@@ -233,7 +233,6 @@ export class ManagerListComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     openDialog() {
         const dialogRef = this.dialog.open(DialogEditManagerDialog, {
-            height: '90%',
             width: '40%',
             data: { data: {}, type: 'new' },
         });
@@ -244,9 +243,7 @@ export class ManagerListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     openEditDialog(element): void {
-        console.log(element);
         const dialogRef = this.dialog.open(DialogEditManagerDialog, {
-            height: '90%',
             width: '40%',
             data: { data: element, type: 'edit' },
         });
@@ -257,7 +254,6 @@ export class ManagerListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     openPermissionEditDialog(element: User): void {
-        console.log(element);
         const dialogRef = this.dialog.open(PermissionEditDialog, {
             height: 'auto',
             width: '60%',

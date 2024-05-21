@@ -32,6 +32,7 @@ import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { BuildingService } from '../building.service';
 import { Building, BuildingPagination } from '../building.types';
 import { DialogEditBuildingDialog } from '../dialog-edit/dialog-edit-building-dialog';
+import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 
 @Component({
     selector: 'building-list',
@@ -90,8 +91,7 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     openDialog() {
         const dialogRef = this.dialog.open(DialogEditBuildingDialog, {
-            height: '90%',
-            width: '40%',
+            width: '50%',
             data: { data: {}, type: 'new' },
         });
 
@@ -102,8 +102,7 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     openEditDialog(element): void {
         const dialogRef = this.dialog.open(DialogEditBuildingDialog, {
-            height: '90%',
-            width: '40%',
+            width: '50%',
             data: { data: element, type: 'edit' },
         });
 
@@ -219,17 +218,16 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/naming-convention
-    delete(Update: any, element: Building) {
-        // console.log(Update, element);
-        // const dialogRef = this.dialog.open(ExampleDialogComponent, {
-        //     width: '250px',
-        //     data: { animal: '' },
-        // });
-        // dialogRef.afterClosed().subscribe((result) => {
-        //     console.log('The dialog was closed', result);
-        //     // this.animal = result;
-        //     this._buildingService.deleteProduct(element.id);
-        // });
+    delete(update: string, element: Building) {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            width: '250px',
+            data: 'delete',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result === 'delete') {
+                this._buildingService.deleteProduct(element.addressId);
+            }
+        });
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

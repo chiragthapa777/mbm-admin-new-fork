@@ -57,37 +57,21 @@ export class DialogEditBuildingDialog {
             city: [''],
             statename: ['', [Validators.required]],
         });
-
-        console.log(this.building);
-        console.log(this.type);
         if (this.type === 'edit') {
             this.contactForm.patchValue(this.building);
         }
     }
 
-    onFileUploadIcon(path): void {
-        console.log(path, 'IMAGE RETURNED');
-        this.contactForm.get('icon').setValue(path);
-        this.contactForm.get('icon').updateValueAndValidity();
-        this.building.icon = path;
-    }
-    onFileUploadCover(path): void {
-        console.log(path, 'IMAGE RETURNED');
-        this.contactForm.get('cover').setValue(path);
-        this.contactForm.get('cover').updateValueAndValidity();
-        this.building.cover = path;
-    }
-
     saveClicked() {
         if (this.type === 'edit') {
             this._buildingService.updateProduct(
-                this.contactForm.value.id,
+                this.building.addressId,
                 this.contactForm.value
             );
         }
         if (this.type === 'new') {
             this._buildingService.createProduct(this.contactForm.value);
         }
-        this.dialogRef.close({ name: 'ss' });
+        this.dialogRef.close({ done: true });
     }
 }

@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Add / Update building</h2>
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography border-y">
     <div class="flex border-b">
         <form class="flex flex-col w-full" [formGroup]="contactForm">
             <div class="flex w-full">
@@ -64,7 +64,7 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">
-    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close color="warn">Cancel</button>
     <button
         (click)="saveClicked()"
         mat-button

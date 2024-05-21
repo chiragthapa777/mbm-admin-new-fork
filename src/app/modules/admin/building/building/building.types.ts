@@ -1,5 +1,4 @@
-export interface BuildingPagination
-{
+export interface BuildingPagination {
     length: number;
     size: number;
     page: number;
@@ -8,16 +7,20 @@ export interface BuildingPagination
     endIndex: number;
 }
 
-
-export interface Building
-{
-    id: string;
-    parent: string;
-    name: string;
-    slug: string;
-    icon: string;
-    cover: string;
-    description: string;
+export interface Building {
+    addressId: string;
+    address: string;
+    zipcode: string;
+    city: string;
+    statecode: string;
+    statename: string;
+    documents: Document[];
 }
 
-
+export interface Document {
+    id: number;
+    description: string;
+    extension: string;
+    filename: string;
+    documentUrl: string;
+}

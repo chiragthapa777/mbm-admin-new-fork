@@ -117,7 +117,7 @@ export class BuildingService {
             map((items) => {
                 // Find the item
                 const item =
-                    items.find((building) => building.id === id) || null;
+                    items.find((building) => building.addressId === id) || null;
 
                 // Update the item
                 this._item.next(item);
@@ -143,10 +143,8 @@ export class BuildingService {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     createProduct(building: any) {
-        console.log(environment.baseUrl + 'building', building);
-
         return this._httpClient
-            .post(environment.baseUrl + 'admin/building', building)
+            .post(environment.baseUrl + 'admin/buildings', building)
             .subscribe(
                 (res) =>
                     this.getProducts(1, 10, 'name', 'asc', '').subscribe(
@@ -167,16 +165,8 @@ export class BuildingService {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     updateProduct(id: string, item: Building) {
-        // console.log(environment.baseUrl + 'item');
-
-        const httpOptions = {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-            body: item,
-        };
-
         return this._httpClient
-            .patch(environment.baseUrl + 'admin/building/' + id, item)
+            .patch(environment.baseUrl + 'admin/buildings/' + id, item)
             .subscribe(
                 (res) =>
                     this.getProducts(1, 10, 'name', 'asc', '').subscribe(
@@ -206,16 +196,8 @@ export class BuildingService {
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     deleteProduct(id: string) {
-        // console.log(environment.baseUrl + 'item');
-
-        const httpOptions = {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-            body: {},
-        };
-
         return this._httpClient
-            .delete(environment.baseUrl + 'admin/building/' + id, httpOptions)
+            .delete(environment.baseUrl + 'admin/buildings/' + id)
             .subscribe(
                 (res) =>
                     this.getProducts(1, 10, 'name', 'asc', '').subscribe(
