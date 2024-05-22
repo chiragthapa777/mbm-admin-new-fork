@@ -20,6 +20,7 @@ import { SharedModule } from '../shared.module';
 import { TicketCommentService } from './ticket-comment.service';
 import { TicketComment } from './ticket-comment.type';
 import { PermissionPipe } from 'app/pipes/PermissionPipe';
+import { NgIf } from '@angular/common';
 
 const commentsParams = {
     page: 1,
@@ -41,6 +42,7 @@ const commentsParams = {
         MatDialogModule,
         MatInputModule,
         PermissionPipe,
+        NgIf,
     ],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
@@ -72,6 +74,7 @@ export class DialogViewTicketDialog {
 
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
+        console.log('init');
         this.ticket = this.data['data'] || null;
         this.commentsParams.ticketId = this.ticket.id;
         this.type = this.data['type'];

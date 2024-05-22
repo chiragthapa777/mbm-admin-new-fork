@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserAuthService } from 'app/services/user.auth.service';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { UserDoc, UserDocPagination } from './user-doc.types';
 
 @Injectable({

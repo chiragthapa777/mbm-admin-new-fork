@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserAuthService } from 'app/services/user.auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { TicketDone, TicketDonePagination } from './ticket-done.types';
 
 @Injectable({

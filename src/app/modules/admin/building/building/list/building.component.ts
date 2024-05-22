@@ -230,9 +230,6 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    view() {}
-
     /**
      * Show flash message
      */

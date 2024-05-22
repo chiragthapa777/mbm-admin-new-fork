@@ -7,7 +7,7 @@ import {
 } from 'app/enums/permission.enum';
 import { UserAuthService } from 'app/services/user.auth.service';
 import { Observable, throwError } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Pagination } from '../pagination.type';
 import { TicketComment } from './ticket-comment.type';
 

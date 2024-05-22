@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { TicketPendingPagination, TicketPending } from './ticket-pending.types';
 import { UserAuthService } from 'app/services/user.auth.service';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',

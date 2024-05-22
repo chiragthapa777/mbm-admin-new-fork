@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { ShortcutsService } from 'app/layout/common/shortcuts/shortcuts.service';
 import { from, Observable, of } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { environment } from '../environments/environment';
 import { InitialData } from './app.types';
 import { Permission, User } from './core/user/user.types';
 import { ROLE_ENUM } from './enums/role.enum';

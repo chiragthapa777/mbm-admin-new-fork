@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -25,14 +26,13 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { fuseAnimations } from '@fuse/animations';
+import { PermissionPipe } from 'app/pipes/PermissionPipe';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { PaymentService } from '../payment.service';
 import { Payment, PaymentPagination } from '../payment.types';
-import { DatePipe } from '@angular/common';
-import { PermissionPipe } from 'app/pipes/PermissionPipe';
 
 @Component({
     selector: 'payment-list',
@@ -204,14 +204,15 @@ export class PaymentListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
             width: '250px',
-            data: { animal: '' },
+            data: 'delete',
         });
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed', result);
             // this.animal = result;
-
-            this._paymentService.deleteProduct(element.paymentId);
+            if (result === 'delete') {
+                this._paymentService.deleteProduct(element.paymentId);
+            }
         });
     }
 

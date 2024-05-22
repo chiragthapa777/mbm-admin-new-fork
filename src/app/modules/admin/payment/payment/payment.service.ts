@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Payment, PaymentPagination } from './payment.types';
 import { UserAuthService } from 'app/services/user.auth.service';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',

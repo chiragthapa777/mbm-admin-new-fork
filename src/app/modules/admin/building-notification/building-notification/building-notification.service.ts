@@ -8,7 +8,7 @@ import {
 } from './building-notification.types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserAuthService } from 'app/services/user.auth.service';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',

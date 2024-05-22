@@ -8,7 +8,7 @@ import {
     throwError
 } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { BuildingDoc, BuildingDocPagination } from './building-doc.types';
 
 @Injectable({

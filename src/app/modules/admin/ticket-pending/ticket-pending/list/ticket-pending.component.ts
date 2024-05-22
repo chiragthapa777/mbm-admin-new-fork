@@ -111,12 +111,9 @@ export class TicketPendingListComponent
     }
 
     openEditDialog(element) {
-        const dialogRef = this.dialog.open(DialogViewTicketDialog, {
+        this.dialog.open(DialogViewTicketDialog, {
             data: { data: element, type: 'edit' },
             minWidth: '60vw',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
         });
     }
     // -----------------------------------------------------------------------------------------------------

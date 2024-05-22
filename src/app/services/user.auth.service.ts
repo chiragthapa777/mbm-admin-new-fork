@@ -7,7 +7,7 @@ import {
 } from 'app/enums/permission.enum';
 import { ROLE_ENUM } from 'app/enums/role.enum';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 export interface PermissionMetaType {
     subject: PERMISSION_SUBJECT;
