@@ -2,3 +2,39 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
+
+/* styles.css or your global stylesheet */
+
+// =======================================
+// dialog panel class responsive
+// =======================================
+
+/* Small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+    .responsive-dialog {
+        width: 95% !important;
+    }
+    .responsive-delete-dialog {
+        width: 95% !important;
+    }
+}
+
+/* Medium devices (tablets, 600px to 900px) */
+@media (min-width: 600px) and (max-width: 900px) {
+    .responsive-dialog {
+        width: 550px !important;
+    }
+    .responsive-delete-dialog {
+        width: 350px !important;
+    }
+}
+
+/* Large devices (desktops, 900px and up) */
+@media (min-width: 900px) {
+    .responsive-dialog {
+        width: 800px !important;
+    }
+    .responsive-delete-dialog {
+        width: 450px !important;
+    }
+}

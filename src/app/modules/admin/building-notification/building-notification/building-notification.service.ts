@@ -101,7 +101,7 @@ export class BuildingNotificationService {
             )
             .pipe(
                 tap((response) => {
-                    let paginatio: BuildingNotificationPagination = {
+                    let pagination: BuildingNotificationPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
                         page: response['meta']['currentPage'],
@@ -110,7 +110,7 @@ export class BuildingNotificationService {
                         endIndex: response['meta']['totalPages'],
                     };
 
-                    this._pagination.next(paginatio);
+                    this._pagination.next(pagination);
                     this._items.next(response['data']);
                 })
             );

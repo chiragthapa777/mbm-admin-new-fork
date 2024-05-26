@@ -1,4 +1,6 @@
-<h2 mat-dialog-title class="font-bold text-xl">Add / Update Admin</h2>
+<h2 mat-dialog-title class="font-bold text-xl">
+    {{type === "view"?"View":"Add / Update"}} User
+</h2>
 <mat-dialog-content class="mat-typography border-y pt-3">
     <div class="flex">
         <form class="flex flex-col w-full" [formGroup]="contactForm">
@@ -133,8 +135,11 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">
-    <button mat-button mat-dialog-close color="warn">Cancel</button>
+    <button mat-button mat-dialog-close color="warn">
+        {{type === "view"?"Close":"Cancel"}}
+    </button>
     <button
+        *ngIf="type!=='view'"
         (click)="saveClicked()"
         mat-button
         [mat-dialog-close]="true"

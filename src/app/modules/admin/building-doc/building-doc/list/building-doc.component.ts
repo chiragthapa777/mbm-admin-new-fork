@@ -182,26 +182,26 @@ export class BuildingDocListComponent
 
     view(Update, element: BuildingDoc) {
         const dialogRef = this.dialog.open(ViewDocDialog, {
-            width: '630px',
+            panelClass: 'responsive-dialog',
             data: { data: element['documents'], type: 'building' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-            //   return this._paymentService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        //     //   return this._paymentService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+        // });
     }
 
     openEditDialog(element) {
         const dialogRef = this.dialog.open(AddDocDialog, {
-            width: '40%',
+            panelClass: 'responsive-dialog',
             data: { data: element['addressId'], type: 'building' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-            //   return this._paymentService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        //     //   return this._paymentService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+        // });
     }
 
     /**

@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import {
@@ -30,6 +31,7 @@ import { MatInputModule } from '@angular/material/input';
         MatDialogModule,
         MatFormFieldModule,
         MatInputModule,
+        A11yModule,
     ],
 })
 export class DeleteDialogComponent {

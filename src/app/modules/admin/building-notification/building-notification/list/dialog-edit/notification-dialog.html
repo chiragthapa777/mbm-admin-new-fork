@@ -1,6 +1,6 @@
-<h2 mat-dialog-title class="capitalize">{{type}} Notification</h2>
-<mat-dialog-content class="mat-typography">
-    <div class="flex border-b">
+<h2 mat-dialog-title class="font-bold text-2xl">Notification</h2>
+<mat-dialog-content class="mat-typography border-y pt-3">
+    <div class="flex">
         <form class="flex flex-col w-full" [formGroup]="formGroup">
             <div class="flex w-full">
                 <div class="flex flex-auto">
@@ -61,7 +61,7 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">
-    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close color="warn">Cancel</button>
     <button
         (click)="saveClicked()"
         mat-button

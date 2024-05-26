@@ -86,7 +86,6 @@ export class ManagerListComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _formBuilder: FormBuilder,
         private _adminService: ManagerService,
         public dialog: MatDialog,
         public userAuthService: UserAuthService
@@ -237,31 +236,31 @@ export class ManagerListComponent implements OnInit, AfterViewInit, OnDestroy {
             data: { data: {}, type: 'new' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 
     openEditDialog(element): void {
         const dialogRef = this.dialog.open(DialogEditManagerDialog, {
-            width: '40%',
+            panelClass: 'responsive-dialog',
             data: { data: element, type: 'edit' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 
     openPermissionEditDialog(element: User): void {
         const dialogRef = this.dialog.open(PermissionEditDialog, {
             height: 'auto',
-            width: '60%',
+            panelClass: 'responsive-dialog',
             data: { userId: element.id },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 }

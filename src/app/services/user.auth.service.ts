@@ -20,9 +20,7 @@ export interface PermissionMetaType {
 export class UserAuthService {
     private user$: BehaviorSubject<User | null> =
         new BehaviorSubject<User | null>(null);
-    constructor(private _httpClient: HttpClient) {
-        console.log('constructor UserAuthService');
-    }
+    constructor(private _httpClient: HttpClient) {}
 
     getUser(): User {
         return this.user$.value;

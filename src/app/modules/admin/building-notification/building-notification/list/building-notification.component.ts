@@ -93,7 +93,6 @@ export class BuildingNotificationListComponent
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _formBuilder: FormBuilder,
         private _notificationService: BuildingNotificationService,
         public dialog: MatDialog,
         private _snackBar: MatSnackBar
@@ -101,8 +100,7 @@ export class BuildingNotificationListComponent
 
     openDialog(): void {
         const dialogRef = this.dialog.open(NotificationFormDialog, {
-            // height: '90%',
-            width: '40%',
+            panelClass: 'responsive-dialog',
             data: { data: {}, type: 'add' },
         });
         dialogRef.afterClosed().subscribe((result) => {});
@@ -110,8 +108,7 @@ export class BuildingNotificationListComponent
 
     openEditDialog(element): void {
         const dialogRef = this.dialog.open(NotificationFormDialog, {
-            // height: '90%',
-            width: '40%',
+            panelClass: 'responsive-dialog',
             data: { data: element, type: 'edit' },
         });
         dialogRef.afterClosed().subscribe((result) => {});
@@ -199,7 +196,7 @@ export class BuildingNotificationListComponent
 
     delete(Update, element: BuildingNotification): void {
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '250px',
+            panelClass: 'responsive-delete-dialog',
             data: { animal: 'delete' },
         });
 

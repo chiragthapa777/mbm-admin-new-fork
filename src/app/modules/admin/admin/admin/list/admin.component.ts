@@ -31,7 +31,7 @@ import { merge, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { AdminService } from '../admin.service';
 import { Admin, AdminPagination } from '../admin.types';
-import { DialogEditBuildingDialog } from '../dialog-edit/dialog-edit-building-dialog';
+import { DialogEditAdminDialog } from '../dialog-edit/dialog-edit-admin-dialog';
 
 @Component({
     selector: 'admin-list',
@@ -221,23 +221,32 @@ export class AdminListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     openDialog(): void {
-        const dialogRef = this.dialog.open(DialogEditBuildingDialog, {
-            width: '60%',
+        const dialogRef = this.dialog.open(DialogEditAdminDialog, {
+            panelClass: 'responsive-dialog',
             data: { data: {}, type: 'new' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 
     openEditDialog(element): void {
-        const dialogRef = this.dialog.open(DialogEditBuildingDialog, {
-            width: '60%',
+        const dialogRef = this.dialog.open(DialogEditAdminDialog, {
+            panelClass: 'responsive-dialog',
             data: { data: element, type: 'edit' },
         });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
+    }
+    viewDialog(element): void {
+        const dialogRef = this.dialog.open(DialogEditAdminDialog, {
+            panelClass: 'responsive-dialog',
+            data: { data: element, type: 'view' },
         });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 }

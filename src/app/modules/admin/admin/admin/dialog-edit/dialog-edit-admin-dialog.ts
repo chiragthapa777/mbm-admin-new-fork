@@ -18,10 +18,11 @@ import { SharedModule } from 'app/shared/shared.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { User } from 'app/core/user/user.types';
 
 @Component({
     selector: 'inventory-list',
-    templateUrl: './dialog-edit-building-dialog.html',
+    templateUrl: './dialog-edit-admin-dialog.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
@@ -31,24 +32,23 @@ import { MatButtonModule } from '@angular/material/button';
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-
     ],
 })
-export class DialogEditBuildingDialog {
+export class DialogEditAdminDialog {
     @ViewChild('fileInput') el: ElementRef;
     contactForm: FormGroup;
-    building: Admin;
+    user: User;
     type: string;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private dialogRef: MatDialogRef<DialogEditBuildingDialog>,
+        private dialogRef: MatDialogRef<DialogEditAdminDialog>,
         private _formBuilder: FormBuilder,
         private _buildingService: AdminService
     ) {}
 
     ngOnInit(): void {
-        this.building = this.data['data'] || null;
+        this.user = this.data['data'] || null;
         this.type = this.data['type'];
         this.contactForm = this._formBuilder.group({
             username: [''],
@@ -60,21 +60,27 @@ export class DialogEditBuildingDialog {
             building: ['', [Validators.required]],
         });
         if (this.type === 'edit') {
-            console.log(this.building, 'BUILDING');
-
-            this.contactForm.patchValue(this.building);
+            this.contactForm.patchValue({
+                username: this.user.userLogin,
+                user_email: this.user.userEmail,
+                first_name: this.user.firstName,
+                last_name: this.user.lastName,
+                role: this.user.role,
+                building: this.user.building,
+                phone: this.user.phone,
+            });
+        } else if (this.type === 'view') {
+            this.contactForm.patchValue({
+                username: this.user.userLogin,
+                user_email: this.user.userEmail,
+                first_name: this.user.firstName,
+                last_name: this.user.lastName,
+                role: this.user.role,
+                building: this.user.building,
+                phone: this.user.phone,
+            });
+            this.contactForm.disable();
         }
-    }
-
-    onFileUploadIcon(path): void {
-        this.contactForm.get('icon').setValue(path);
-        this.contactForm.get('icon').updateValueAndValidity();
-        this.building.icon = path;
-    }
-    onFileUploadCover(path): void {
-        this.contactForm.get('cover').setValue(path);
-        this.contactForm.get('cover').updateValueAndValidity();
-        this.building.cover = path;
     }
 
     saveClicked() {
@@ -83,9 +89,6 @@ export class DialogEditBuildingDialog {
                 this.contactForm.value.id,
                 this.contactForm.value
             );
-        }
-        if (this.type === 'new') {
-            this._buildingService.createProduct(this.contactForm.value);
         }
         this.dialogRef.close({ name: 'ss' });
     }

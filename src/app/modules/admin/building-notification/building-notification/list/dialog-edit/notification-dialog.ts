@@ -21,6 +21,8 @@ import { getDirtyValues } from 'app/utils/dirtyvalues';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 //
 export interface Building {
     addressId: string;
@@ -42,6 +44,8 @@ export interface Building {
         SharedModule,
         MatFormFieldModule,
         MatAutocompleteModule,
+        MatButtonModule,
+        MatInputModule,
     ],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix

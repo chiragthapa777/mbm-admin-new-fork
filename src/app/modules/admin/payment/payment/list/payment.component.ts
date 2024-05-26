@@ -200,10 +200,8 @@ export class PaymentListComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     delete(Update, element: Payment) {
-        console.log(Update, element);
-
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '250px',
+            panelClass: 'responsive-delete-dialog',
             data: 'delete',
         });
 

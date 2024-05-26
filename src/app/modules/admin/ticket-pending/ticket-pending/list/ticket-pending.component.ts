@@ -113,7 +113,7 @@ export class TicketPendingListComponent
     openEditDialog(element) {
         this.dialog.open(DialogViewTicketDialog, {
             data: { data: element, type: 'edit' },
-            minWidth: '60vw',
+            width: '70vw',
         });
     }
     // -----------------------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ export class TicketPendingListComponent
         const animal = 'done';
 
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '250px',
+            panelClass: 'responsive-delete-dialog',
             data: { animal },
         });
 

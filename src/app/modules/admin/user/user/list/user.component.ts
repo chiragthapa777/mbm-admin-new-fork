@@ -8,30 +8,31 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { fuseAnimations } from '@fuse/animations';
-import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
-import { merge, Observable, Subject } from 'rxjs';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { UserService } from '../user.service';
-import { User, UserPagination } from '../user.types';
+import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SharedModule } from 'app/shared/shared.module';
+import { fuseAnimations } from '@fuse/animations';
 import { PermissionPipe } from 'app/pipes/PermissionPipe';
+import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { merge, Observable, Subject } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { UserService } from '../user.service';
+import { User, UserPagination } from '../user.types';
+import { DialogEditUserDialog } from '../dialog-edit/dialog-edit-user-dialog';
 
 @Component({
     selector: 'user-list',
@@ -93,14 +94,24 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _formBuilder: FormBuilder,
         private _userService: UserService,
         public dialog: MatDialog
     ) {}
 
     openDialog() {}
 
-    openEditDialog(element) {}
+    openEditDialog(element) {
+        const dialogRef = this.dialog.open(DialogEditUserDialog, {
+            panelClass: 'responsive-dialog',
+            data: { data: element, type: 'edit' },
+        });
+    }
+    openViewDialog(element) {
+        const dialogRef = this.dialog.open(DialogEditUserDialog, {
+            panelClass: 'responsive-dialog',
+            data: { data: element, type: 'view' },
+        });
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -183,16 +194,15 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     delete(Update, element: User) {
-
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '250px',
-            data: { animal: '' },
+            panelClass: 'responsive-delete-dialog',
+            data: 'delete',
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            // this.animal = result;
-
-            this._userService.deleteProduct(element.id);
+            if (result === 'delete') {
+                this._userService.deleteProduct(element.id);
+            }
         });
     }
 

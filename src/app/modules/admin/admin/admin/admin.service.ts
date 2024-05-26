@@ -1,6 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import {
+    BehaviorSubject,
+    Observable,
+    of,
+    Subscription,
+    throwError,
+} from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { Admin, AdminPagination } from './admin.types';
@@ -152,14 +158,7 @@ export class AdminService {
      * @param item
      */
 
-    updateProduct(id: string, item: Admin) {
-        // console.log(environment.baseUrl + 'item');
-
-        const httpOptions = {
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-            body: item,
-        };
-
+    updateProduct(id: string, item: Admin): Subscription {
         return this._httpClient
             .patch(environment.baseUrl + 'users/' + id, item)
             .subscribe(

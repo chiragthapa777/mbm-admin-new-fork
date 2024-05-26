@@ -94,8 +94,7 @@ export class TicketDoneService {
             })
             .pipe(
                 tap((response) => {
-                    console.log(response);
-                    let paginatio: TicketDonePagination = {
+                    let pagination: TicketDonePagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
                         page: response['meta']['currentPage'],
@@ -104,7 +103,7 @@ export class TicketDoneService {
                         endIndex: response['meta']['totalPages'],
                     };
 
-                    this._pagination.next(paginatio);
+                    this._pagination.next(pagination);
                     this._items.next(response['data']);
                 })
             );

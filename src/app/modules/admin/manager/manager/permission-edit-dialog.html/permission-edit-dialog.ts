@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
     MAT_DIALOG_DATA,
     MatDialogModule,
@@ -17,6 +18,7 @@ import {
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { Permission } from 'app/core/user/user.types';
 import { PermissionSubjectArray } from 'app/enums/permission.enum';
 import { PermissionNamePipe } from 'app/pipes/PermissionNamePipe';
@@ -38,6 +40,8 @@ import { Subject } from 'rxjs';
         MatButtonModule,
         PermissionPipe,
         PermissionNamePipe,
+        MatCheckboxModule,
+        MatSelectModule,
     ],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix

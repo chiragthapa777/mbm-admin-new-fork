@@ -89,7 +89,6 @@ export class UserDocListComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _formBuilder: FormBuilder,
         private _paymentService: UserDocService,
         public dialog: MatDialog
     ) {}
@@ -176,7 +175,7 @@ export class UserDocListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     view(Update, element: BuildingDoc) {
         const dialogRef = this.dialog.open(ViewDocDialog, {
-            width: '630px',
+            panelClass: 'responsive-dialog',
             data: { data: element['documents'], type: 'user' },
         });
 
@@ -192,7 +191,7 @@ export class UserDocListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     openEditDialog(element) {
         const dialogRef = this.dialog.open(AddDocDialog, {
-            width: '40%',
+            panelClass: 'responsive-dialog',
             data: { data: element['id'], type: 'user' },
         });
 

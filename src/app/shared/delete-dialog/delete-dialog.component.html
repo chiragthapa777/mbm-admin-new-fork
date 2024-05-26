@@ -9,6 +9,7 @@
                 [formControlName]="'name'"
                 [placeholder]="'DELETE'"
                 [spellcheck]="false"
+                cdkFocusInitial
             />
         </mat-form-field>
     </form>
@@ -19,7 +20,6 @@
         [disabled]="basicInfoForm.value.name != 'DELETE'"
         mat-button
         [mat-dialog-close]="data.animal ?? data"
-        cdkFocusInitial
     >
         Ok
     </button>

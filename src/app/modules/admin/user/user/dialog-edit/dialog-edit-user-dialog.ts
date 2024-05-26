@@ -17,30 +17,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BuildingService } from 'app/modules/admin/building/building/building.service';
+import { Building } from 'app/modules/admin/building/building/building.types';
 import { PermissionNamePipe } from 'app/pipes/PermissionNamePipe';
 import { SharedModule } from 'app/shared/shared.module';
-import {
-    Observable,
-    ReplaySubject,
-    Subject,
-    debounceTime,
-    filter,
-    map,
-    switchMap,
-    takeUntil,
-    tap,
-} from 'rxjs';
-import { ManagerService } from '../manager.service';
-//
-export interface Building {
-    addressId: string;
-    address: string;
-}
+import { ReplaySubject, Subject } from 'rxjs';
+import { UserService } from '../user.service';
 //
 
 @Component({
     selector: 'inventory-list',
-    templateUrl: './dialog-edit-manager-dialog.html',
+    templateUrl: './dialog-edit-user-dialog.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
@@ -55,10 +41,10 @@ export interface Building {
     ],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export class DialogEditManagerDialog {
+export class DialogEditUserDialog {
     @ViewChild('fileInput') el: ElementRef;
     contactForm: FormGroup;
-    manager: any;
+    user: any;
     type: string;
     //
     pickerInitialData = [];
@@ -89,15 +75,15 @@ export class DialogEditManagerDialog {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private dialogRef: MatDialogRef<DialogEditManagerDialog>,
+        private dialogRef: MatDialogRef<DialogEditUserDialog>,
         private _formBuilder: FormBuilder,
-        private _managerService: ManagerService,
-        private _buildingService: BuildingService
+        private _buildingService: BuildingService,
+        private _userService: UserService
     ) {}
 
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
-        this.manager = this.data['data'] || null;
+        this.user = this.data['data'] || null;
         this.type = this.data['type'];
         this.contactForm = this._formBuilder.group({
             username: [''],
@@ -110,65 +96,36 @@ export class DialogEditManagerDialog {
             zipcode: [''],
             building: [''],
             apartment: [''],
-            role: ['Manager'],
+            role: ['User'],
             // manager: ['', [Validators.required]],
         });
-        if (this.type === 'edit') {
+        if (this.type === 'edit' || this.type === 'view') {
             this.contactForm.patchValue({
-                username: this.manager.userLogin,
-                user_email: this.manager.userEmail,
-                first_name: this.manager.firstName,
-                last_name: this.manager.lastName,
-                // state: this.manager.state,
-                // city: this.manager.city,
-                // building: this.manager.building,
-                // zipcode: this.manager.zipcode,
-                apartment: this.manager.apartment,
+                username: this.user.userLogin,
+                user_email: this.user.userEmail,
+                first_name: this.user.firstName,
+                last_name: this.user.lastName,
+                // state: this.user.state,
+                // city: this.user.city,
+                // building: this.user.building,
+                // zipcode: this.user.zipcode,
+                apartment: this.user.apartment,
             });
             this.contactForm.get('username').disable();
             this.contactForm.get('user_email').disable();
         }
-
-        this.bankServerSideFilteringCtrl.valueChanges
-            .pipe(
-                filter((search) => !!search),
-                tap(() => (this.searching = true)),
-                takeUntil(this._onDestroy),
-                debounceTime(200),
-                switchMap((search) => this.getFilteredBanks(search)),
-                // delay(500),
-                takeUntil(this._onDestroy)
-            )
-            .subscribe(
-                (filteredBuildings) => {
-                    this.searching = false;
-                    this.filteredServerSideBuildings.next(filteredBuildings);
-                },
-                (error) => {
-                    // no errors in our simulated example
-                    this.searching = false;
-                    // handle error...
-                }
-            );
+        if (this.type === 'view') {
+            this.contactForm.disable();
+        }
 
         this._buildingService.getBuildingOptions().subscribe((res) => {
             this.pickerInitialData = res;
             this.stateOptions = this.pickerInitialData['state_option'];
-            // this.buildingOptions = Object.keys(
-            //     this.pickerInitialData['building_option']
-            // ).map(key => ({
-            //     groupName: key,
-            //     building: this.pickerInitialData['building_option'][key].map(
-            //         d => ({ value: d })
-            //     ),
-            // }));
-            if (this.type === 'edit') {
-                this.contactForm.get('state').setValue(this.manager.state);
-                this.contactForm.get('city').setValue(this.manager.city);
-                this.contactForm.get('zipcode').setValue(this.manager.zipcode);
-                this.contactForm
-                    .get('building')
-                    .setValue(this.manager.building);
+            if (this.type === 'edit' || this.type === 'view') {
+                this.contactForm.get('state').setValue(this.user.state);
+                this.contactForm.get('city').setValue(this.user.city);
+                this.contactForm.get('zipcode').setValue(this.user.zipcode);
+                this.contactForm.get('building').setValue(this.user.building);
             }
         });
 
@@ -177,7 +134,6 @@ export class DialogEditManagerDialog {
             this.contactForm.get('city').setValue('');
             this.contactForm.get('zipcode').setValue('');
             this.contactForm.get('building').setValue('');
-
             this.zipOptions = [];
             this.buildingOptions = [];
         });
@@ -196,28 +152,17 @@ export class DialogEditManagerDialog {
         this._onDestroy.next();
         this._onDestroy.complete();
     }
+
     saveClicked(): void {
         if (this.type === 'edit') {
-            this._managerService.updateProduct(
-                this.manager.id,
+            this._userService.updateProduct(
+                this.user.id,
                 this.contactForm.value
             );
         }
         if (this.type === 'new') {
-            this._managerService.createProduct(this.contactForm.value);
+            this._userService.createProduct(this.contactForm.value);
         }
         this.dialogRef.close({ name: 'ss' });
-    }
-
-    someMethod(a): void {
-        console.log('🚀 ~ DialogEditManagerDialog ~ someMethod ~ a:', a);
-    }
-
-    getFilteredBanks(search: string): Observable<Building[]> {
-        // return this.http.get<BankType[]>(url, { params: { search } });
-
-        return this._buildingService.getProducts(1, 10, '', '', search).pipe(
-            map((response: any) => response.data) // Extracting only the buildings from the response
-        );
     }
 }

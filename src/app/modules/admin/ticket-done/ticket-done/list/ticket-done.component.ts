@@ -99,11 +99,11 @@ export class TicketDoneListComponent
     openEditDialog(element) {
         const dialogRef = this.dialog.open(DialogViewTicketDialog, {
             data: { data: element, type: 'edit' },
-            minWidth: '60vw',
+            panelClass: 'responsive-dialog',
         });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -187,9 +187,8 @@ export class TicketDoneListComponent
     // -----------------------------------------------------------------------------------------------------
 
     delete(Update, element: TicketDone) {
-
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '250px',
+            panelClass: 'responsive-delete-dialog',
             data: { animal: '' },
         });
 

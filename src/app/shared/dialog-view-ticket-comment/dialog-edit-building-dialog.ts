@@ -3,6 +3,8 @@ import {
     ChangeDetectorRef,
     Component,
     Inject,
+    OnDestroy,
+    OnInit,
     ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -46,7 +48,7 @@ const commentsParams = {
     ],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export class DialogViewTicketDialog {
+export class DialogViewTicketDialog implements OnInit, OnDestroy {
     commentForm: FormGroup;
     ticket: any;
     type: string;
@@ -72,9 +74,10 @@ export class DialogViewTicketDialog {
         private readonly ticketCommentService: TicketCommentService
     ) {}
 
+    ngOnDestroy(): void {}
+
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
-        console.log('init');
         this.ticket = this.data['data'] || null;
         this.commentsParams.ticketId = this.ticket.id;
         this.type = this.data['type'];

@@ -86,7 +86,7 @@ export class ManagerService {
             )
             .pipe(
                 tap((response) => {
-                    let paginatio: ManagerPagination = {
+                    let pagination: ManagerPagination = {
                         length: response['meta']['totalItems'],
                         size: response['meta']['itemsPerPage'],
                         page: response['meta']['currentPage'],
@@ -95,7 +95,7 @@ export class ManagerService {
                         endIndex: response['meta']['totalPages'],
                     };
 
-                    this._pagination.next(paginatio);
+                    this._pagination.next(pagination);
                     this._items.next(response['data']);
                 })
             );
@@ -134,7 +134,6 @@ export class ManagerService {
      */
 
     createProduct(admin) {
-
         return this._httpClient
             .post(environment.baseUrl + 'users', admin)
             .subscribe(
@@ -157,13 +156,6 @@ export class ManagerService {
      */
 
     updateProduct(id: string, item: Manager) {
-        // console.log(environment.baseUrl + 'item');
-
-        const httpOptions = {
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-            body: item,
-        };
-
         return this._httpClient
             .patch(environment.baseUrl + 'users/' + id, item)
             .subscribe(

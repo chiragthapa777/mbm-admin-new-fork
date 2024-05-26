@@ -83,7 +83,6 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _formBuilder: FormBuilder,
         private _buildingService: BuildingService,
         public dialog: MatDialog
     ) {}
@@ -91,24 +90,24 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     openDialog() {
         const dialogRef = this.dialog.open(DialogEditBuildingDialog, {
-            width: '50%',
+            panelClass: 'responsive-dialog',
             data: { data: {}, type: 'new' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 
     openEditDialog(element): void {
         const dialogRef = this.dialog.open(DialogEditBuildingDialog, {
-            width: '50%',
+            panelClass: 'responsive-dialog',
             data: { data: element, type: 'edit' },
         });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(JSON.stringify(result, null, '\t'));
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log(JSON.stringify(result, null, '\t'));
+        // });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -220,7 +219,7 @@ export class BuildingListComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/naming-convention
     delete(update: string, element: Building) {
         const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '250px',
+            panelClass: 'responsive-delete-dialog',
             data: 'delete',
         });
         dialogRef.afterClosed().subscribe((result) => {
